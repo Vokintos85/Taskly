@@ -1,0 +1,78 @@
+чивается SQLite, применяются миграции, API сразу работает.
+
+## Запуск
+```bash
+docker compose up -d --build
+Проверка
+bash
+curl http://localhost:8080/api/tasks
+Что происходит
+Laravel уже предустановлен в папке app/
+
+При старте:
+
+Настраиваются права на storage и bootstrap/cache
+
+Создаётся database/database.sqlite (если не существует)
+
+Выполняются миграции
+
+CSRF отключен для API маршрутов
+
+Volume синхронизирует БД между контейнером и хостом
+
+Доступные эндпоинты
+GET /api/tasks - список задач
+
+POST /api/tasks - создать задачу
+
+GET /api/tasks/{id} - получить задачу
+
+PUT /api/tasks/{id} - обновить задачу
+
+DELETE /api/tasks/{id} - удалить задачу
+
+Примеры использования
+bash
+# Создать задачу
+curl -X POST http://localhost:8080/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Моя задача","description":"Описание"}'
+
+# Получить все задачи
+curl http://localhost:8080/api/tasks
+
+# Получить задачу по ID
+curl http://localhost:8080/api/tasks/1
+
+# Обновить задачу
+curl -X PUT http://localhost:8080/api/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Обновлённая задача","description":"Новое описание"}'
+
+# Удалить задачу
+curl -X DELETE http://localhost:8080/api/tasks/1
+Структура задачи
+json
+{
+  "id": 1,
+  "title": "Название задачи",
+  "description": "Описание задачи",
+  "status": "pending",
+  "created_at": "2024-10-03T10:36:01.000000Z",
+  "updated_at": "2024-10-03T10:36:01.000000Z"
+}
+Остановка
+bash
+docker compose down
+Технические детали:
+
+База данных: SQLite (database/database.sqlite)
+
+PHP 8.2 + Nginx
+
+Автоматические миграции при запуске
+
+Готовый CRUD API для управления задачами
+
+text
